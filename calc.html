@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/1.1.9/js/libs/jquery-1.10.2.min.js"></script>
+    </head>
+
+    <body>
+        <style>
+            .calc {
+                font-family: 'Nunito Sans', Arial, Helvetica, sans-serif;
+                font-size: 18px;
+                font-weight: 300;
+                color: #333;
+            }
+            .calc * {
+                box-sizing: border-box;
+            }
+            .calc ul {
+                list-style: none;
+                margin: 0;
+            }
+            .container {
+                max-width: 1200px;
+                padding: 0 20px;
+                margin: 0 auto;
+            }
+            .wrapper {
+                display: flex;
+                border-radius: 12px;
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }
+            .serivce-list {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                padding: 32px 0 !important;
+                width: 375px;
+                flex: none;
+
+                border-right: 1px solid rgba(0, 0, 0, 0.07);
+                background: rgba(0, 0, 0, 0.01);
+            }
+            .service-item {
+                display: flex;
+                align-items: flex-start;
+                align-self: stretch;
+                gap: 8px;
+                padding: 12px 32px;
+
+                font-weight: 400;
+                line-height: 120%;
+
+                cursor: pointer;
+
+                transition: background 200ms ease-out, color 200ms ease-out;
+            }
+            .service-item.active {
+                font-weight: 800;
+                color: #fff;
+                background: linear-gradient(118deg, #ffc507 -39.71%, #ff5a45 166.69%), #edf4ff;
+            }
+            .service-body {
+                display: flex;
+                flex-direction: column;
+                gap: 32px;
+                padding: 40px;
+                width: 100%;
+            }
+            .calc .service-text-list {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                list-style: disc;
+                padding-inline-start: 22px;
+            }
+            .calc .service-text-list li::marker {
+                color: #ff9126;
+            }
+            .divider {
+                align-self: stretch;
+                height: 1px;
+                background: rgba(0, 0, 0, 0.1);
+            }
+            .calc-heading {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                margin-bottom: 16px;
+            }
+            .calc-heading-text {
+                margin: 0;
+                font-weight: 700;
+                line-height: 120%;
+            }
+            .tooltip-icon {
+                display: grid;
+                place-items: center;
+                height: 24px;
+                width: 24px;
+                border-radius: 100px;
+                font-weight: 600;
+                background: #f2f2f2;
+                color: #92a1b2;
+            }
+            .calc-form {
+                display: flex;
+                gap: 32px;
+                margin-bottom: 32px;
+            }
+            .input-caption {
+                font-size: 14px;
+            }
+            .monthly-profit,
+            .contract-term {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                gap: 6px;
+                flex: none;
+                height: min-content;
+            }
+            .input-number {
+                position: relative;
+                border-radius: 12px;
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                height: 48px;
+                width: 240px;
+                padding: 16px 24px;
+                font-size: 18px;
+                font-weight: 500;
+            }
+            .monthly-profit::after {
+                content: '₽';
+                color: #888;
+                position: absolute;
+                right: 16px;
+                bottom: 12px;
+            }
+            .input-number {
+                -moz-appearance: textfield;
+            }
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+            }
+            .range-wrapper {
+                display: block;
+                position: absolute;
+                bottom: 0;
+                left: 8px;
+                right: 8px;
+                height: 2px;
+            }
+            .range-relative-container {
+                display: block;
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+            .range-progress {
+                display: block;
+                position: absolute;
+                left: 0;
+                height: 100%;
+                width: 0%;
+                max-width: 100%;
+                background-color: #ff9126;
+                border-radius: 10px;
+            }
+            /* .range-progress::after {
+                content: '';
+                position: absolute;
+                top: -9px;
+                right: -9px;
+                display: block;
+                width: 16px;
+                height: 16px;
+                background-color: #fff;
+                border-radius: 100px;
+                border: 3px solid #ff9126;
+                cursor: pointer;
+            } */
+            .input-range {
+                position: absolute;
+                left: -4px;
+                right: -4px;
+                accent-color: #ff9126;
+                appearance: none;
+                height: 0px;
+                width: 100%;
+            }
+
+            .radio-container {
+                display: flex;
+                gap: 8px;
+            }
+            .input-radio {
+                position: absolute;
+                width: 0;
+                height: 0;
+                opacity: 0;
+            }
+            .radio-label {
+                display: grid;
+                place-items: center;
+                height: 48px;
+                padding: 8px 24px;
+                border-radius: 12px;
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                user-select: none;
+                cursor: pointer;
+            }
+            .input-radio:checked + label {
+                font-weight: 500;
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                background: rgba(0, 0, 0, 0.05);
+            }
+            .calc-result-container {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                padding: 20px 32px;
+
+                border-radius: 12px;
+                border: 1px solid var(--1, #ffc507);
+                background: #fffaf4;
+                background-image: url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.46 39.4C15.1 37.64 17.6 37.78 19.04 39.7L21.06 42.4C22.68 44.54 25.3 44.54 26.92 42.4L28.94 39.7C30.38 37.78 32.88 37.64 34.52 39.4C38.08 43.2 40.98 41.94 40.98 36.62V14.08C41 6.02 39.12 4 31.56 4H16.44C8.88 4 7 6.02 7 14.08V36.6C7 41.94 9.92 43.18 13.46 39.4Z' stroke='url(%23paint0_linear_1_28443)' stroke-opacity='0.5' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 26L30 14' stroke='url(%23paint1_linear_1_28443)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M29.989 26H30.007' stroke='url(%23paint2_linear_1_28443)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17.989 15H18.007' stroke='url(%23paint3_linear_1_28443)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_1_28443' x1='-16.5611' y1='10.5056' x2='72.6619' y2='50.6241' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FFC507'/%3E%3Cstop offset='1' stop-color='%23FF5A45'/%3E%3C/linearGradient%3E%3ClinearGradient id='paint1_linear_1_28443' x1='9.67947' y1='15.9514' x2='39.2673' y2='31.6143' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FFC507'/%3E%3Cstop offset='1' stop-color='%23FF5A45'/%3E%3C/linearGradient%3E%3ClinearGradient id='paint2_linear_1_28443' x1='27.616' y1='25.3252' x2='32.5418' y2='27.9275' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FFC507'/%3E%3Cstop offset='1' stop-color='%23FF5A45'/%3E%3C/linearGradient%3E%3ClinearGradient id='paint3_linear_1_28443' x1='15.616' y1='14.3252' x2='20.5418' y2='16.9275' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FFC507'/%3E%3Cstop offset='1' stop-color='%23FF5A45'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A");
+                background-repeat: no-repeat;
+                background-position: center right 20px;
+            }
+            .calc-result-decription {
+                font-size: 14px;
+            }
+            .calc-result-value {
+                font-size: 48px;
+                font-weight: 600;
+                line-height: 115%;
+                letter-spacing: -0.02em;
+            }
+            /* .calc-result-value::after {
+                content: ' ₽';
+            } */
+            .calc-result-disclaimer {
+                color: rgba(51, 51, 51, 0.5);
+                font-size: 10px;
+            }
+
+            .sum-caption {
+                color: #999;
+                margin-top: 16px;
+                font-size: 14px;
+                text-align: center;
+            }
+            @media screen and (max-width: 480px) {
+                .container {
+                    padding: 0 10px;
+                }
+                .wrapper {
+                    flex-direction: column;
+                }
+                .serivce-list {
+                    padding: 8px 0 !important;
+                    width: 100%;
+                    gap: 0;
+                    border-right: none;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+                }
+                .service-item {
+                    font-size: 16px;
+                    padding: 8px 12px;
+                }
+                .calc-form {
+                    flex-direction: column;
+                    gap: 16px;
+                    margin-bottom: 16px;
+                }
+                .service-body {
+                    padding: 12px;
+                    gap: 16px;
+                }
+                .service-text-list {
+                    padding-inline-start: 16px;
+                }
+                .service-text-item {
+                    font-size: 16px;
+                }
+                .calc-heading-text {
+                    font-size: 16px;
+                }
+                .input-number {
+                    font-size: 16px;
+                    width: 100%;
+                }
+                .radio-label {
+                    font-size: 16px;
+                }
+                .calc-result-container {
+                    padding: 12px;
+                }
+                .calc-result-value {
+                    font-size: 32px;
+                }
+            }
+        </style>
+        <section class="calc">
+            <div class="container">
+                <div class="wrapper">
+                    <ul class="serivce-list">
+                        <li class="service-item active">Performance-маркетинг</li>
+                        <li class="service-item">Арбитраж трафика (PPC)</li>
+                        <li class="service-item">Автоматизация работы колл-центра</li>
+                        <li class="service-item">Разработка сайтов и сервисов</li>
+                        <li class="service-item">Внедрение CRM</li>
+                        <li class="service-item">Внедрение сквозной аналитики</li>
+                        <li class="service-item">Бот с искусственным интеллектом</li>
+                        <li class="service-item">SEO</li>
+                        <li class="service-item">Техподдержка</li>
+                        <li class="service-item">Брендинг</li>
+                    </ul>
+                    <div class="service-body">
+                        <div class="service-text-container">
+                            <ul class="service-text-list">
+                                <li class="service-text-item">Согласуем медиаплан с количеством и стоимостью лидов.</li>
+                                <li class="service-text-item">Автоматизируем работу отдела продаж, внедряем воронку продаж.</li>
+                                <li class="service-text-item">Разрабатываем посадочные страницы.</li>
+                                <li class="service-text-item">Создаем рекламные баннеры и тексты объявлений.</li>
+                                <li class="service-text-item">Настраиваем рекламные кампании.</li>
+                                <li class="service-text-item">Проводим сплит-тестирования.</li>
+                                <li class="service-text-item">Оцениваем эффективность каждого канала на основе сквозной аналитики.</li>
+                                <li class="service-text-item">Оперативно распределяем бюджет по каналам и оптимизируем РК.</li>
+                                <li class="service-text-item">Отчитываемся о выполнении KPI, даем рекомендации.</li>
+                            </ul>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="calc-container">
+                            <div class="calc-heading">
+                                <h4 class="calc-heading-text">Рассчитайте свое вознаграждение</h4>
+                                <div class="calc-heading-tooltip">
+                                    <div class="tooltip-icon">?</div>
+                                    <div class="tooltip-popup"></div>
+                                </div>
+                            </div>
+                            <form class="calc-form">
+                                <div class="monthly-profit">
+                                    <label class="input-caption" for="monthly-profit">Ежемесячная прибыль</label>
+                                    <input
+                                        type="text"
+                                        class="input-number"
+                                        id="monthly-profit"
+                                        name="monthly-profit"
+                                        min="500000"
+                                        max="5000000"
+                                        value="500 000"
+                                    />
+                                    <input type="text" style="display: none" hidden name="breakpoints" value="[1000000, 2000000, 3000000]" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" />
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="contract-term">
+                                    <span class="input-caption">Срок</span>
+                                    <div class="radio-container">
+                                        <div class="radio-wrapper">
+                                            <input
+                                                type="radio"
+                                                class="input-radio"
+                                                name="contract-term"
+                                                id="contract-term-1-3"
+                                                value="[0.017, 0.02, 0.022]"
+                                                checked
+                                            />
+                                            <label class="radio-label active" for="contract-term-1-3">1-3 мес.</label>
+                                        </div>
+                                        <div class="radio-wrapper">
+                                            <input
+                                                type="radio"
+                                                class="input-radio"
+                                                name="contract-term"
+                                                id="contract-term-4-6"
+                                                value="[0.014, 0.017, 0.02]"
+                                            />
+                                            <label class="radio-label" for="contract-term-4-6">4-6 мес.</label>
+                                        </div>
+                                        <!-- <div class="radio-wrapper">
+                                            <input type="radio" class="input-radio" name="contract-term" id="contract-term-unlim" value="[0, 0, 0]" />
+                                            <label class="radio-label" for="contract-term-unlim">Бессрочно</label>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="calc-result-container">
+                                <small class="calc-result-decription">Вознаграждение*</small>
+                                <strong class="calc-result-value">8 500 ₽</strong>
+                                <small class="calc-result-disclaimer">*Не является публичной оффертой. Расчет является приблизительным.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="sum-caption">Вознаграждение от разных услуг суммируется</p>
+            </div>
+        </section>
+        <script>
+            $('.calc-form').on('input', (e) => {
+                const form = $(e.currentTarget);
+                const resultContainer = form.siblings('.calc-result-container');
+                const resultNode = resultContainer.find('.calc-result-value');
+                let data = form.serializeArray();
+                profit = parseInt(String(data[0].value).split(' ').join(''));
+                breakpointsArr = JSON.parse(data[1].value);
+                termArr = JSON.parse(data[2].value);
+                let factor = termArr[0];
+                if (profit > breakpointsArr[0]) factor = termArr[1];
+                if (profit > breakpointsArr[1]) factor = termArr[2];
+
+                if (factor === 0) {
+                    resultNode.text('Индивидуально');
+                    return;
+                }
+
+                const result = Math.floor(profit * factor);
+                resultNode.text(result.toLocaleString('ru-RU') + ' ₽');
+            });
+
+            const profitInput = document.querySelector('#monthly-profit');
+            const inputRange = document.querySelector('.input-range');
+            const rangeProgress = document.querySelector('.range-progress');
+            rangeProgress.style.width = `${((profitInput.value - profitInput.min) / (profitInput.max - profitInput.min)) * 100}%`;
+            profitInput.addEventListener('input', (e) => {
+                rangeProgress.style.width = `${((e.target.value - e.target.min) / (e.target.max - e.target.min)) * 100}%`;
+                inputRange.value = e.target.value;
+            });
+            inputRange.addEventListener('input', (e) => {
+                profitInput.value = Number(e.target.value).toLocaleString('ru-RU');
+                rangeProgress.style.width = `${((e.target.value - e.target.min) / (e.target.max - e.target.min)) * 100}%`;
+            });
+        </script>
+    </body>
+</html>
