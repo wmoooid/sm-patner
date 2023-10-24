@@ -34,7 +34,7 @@
                 display: flex;
                 border-radius: 12px;
                 border: 1px solid rgba(0, 0, 0, 0.1);
-                overflow: hidden;
+                /* overflow: hidden; */
             }
             .serivce-list {
                 display: flex;
@@ -62,16 +62,23 @@
                 transition: background 200ms ease-out, color 200ms ease-out;
             }
             .service-item.active {
-                font-weight: 800;
+                font-weight: 700;
+                letter-spacing: -0.03em;
                 color: #fff;
                 background: linear-gradient(118deg, #ffc507 -39.71%, #ff5a45 166.69%), #edf4ff;
             }
             .service-body {
-                display: flex;
+                display: none;
                 flex-direction: column;
                 gap: 32px;
                 padding: 40px;
                 width: 100%;
+            }
+            .service-body.active {
+                display: flex;
+            }
+            .service-text-container {
+                margin-bottom: auto;
             }
             .calc .service-text-list {
                 display: flex;
@@ -79,6 +86,9 @@
                 gap: 8px;
                 list-style: disc;
                 padding-inline-start: 22px;
+            }
+            .service-text-p {
+                margin-top: 0;
             }
             .calc .service-text-list li::marker {
                 color: #ff9126;
@@ -99,6 +109,9 @@
                 font-weight: 700;
                 line-height: 120%;
             }
+            .calc-heading-tooltip {
+                position: relative;
+            }
             .tooltip-icon {
                 display: grid;
                 place-items: center;
@@ -108,6 +121,26 @@
                 font-weight: 600;
                 background: #f2f2f2;
                 color: #92a1b2;
+                user-select: none;
+                cursor: help;
+            }
+            .tooltip-popup {
+                position: absolute;
+                top: 32px;
+                right: -16px;
+                z-index: 100;
+                width: 300px;
+                padding: 16px;
+                font-size: 12px;
+                border-radius: 12px;
+                background-color: #fff;
+                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.08), 0px 0px 4px 0px rgba(0, 0, 0, 0.04);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 200ms ease-out;
+            }
+            .calc-heading-tooltip:hover .tooltip-popup {
+                opacity: 1;
             }
             .calc-form {
                 display: flex;
@@ -188,7 +221,7 @@
                 accent-color: #ff9126;
                 appearance: none;
                 height: 0px;
-                width: 100%;
+                width: calc(100% + 4px);
             }
             .radio-container {
                 display: flex;
@@ -263,7 +296,7 @@
                 }
                 .service-item {
                     font-size: 16px;
-                    padding: 8px 12px;
+                    padding: 8px 16px;
                 }
                 .calc-form {
                     flex-direction: column;
@@ -291,7 +324,8 @@
                     font-size: 16px;
                 }
                 .calc-result-container {
-                    padding: 12px;
+                    padding: 12px 16px;
+                    background-image: none;
                 }
                 .calc-result-value {
                     font-size: 32px;
@@ -302,18 +336,18 @@
             <div class="container">
                 <div class="wrapper">
                     <ul class="serivce-list">
-                        <li class="service-item active">Performance-маркетинг</li>
-                        <li class="service-item">Арбитраж трафика (PPC)</li>
-                        <li class="service-item">Автоматизация работы колл-центра</li>
-                        <li class="service-item">Разработка сайтов и сервисов</li>
-                        <li class="service-item">Внедрение CRM</li>
-                        <li class="service-item">Внедрение сквозной аналитики</li>
-                        <li class="service-item">Бот с искусственным интеллектом</li>
-                        <li class="service-item">SEO</li>
-                        <li class="service-item">Техподдержка</li>
-                        <li class="service-item">Брендинг</li>
+                        <li data-target="1" class="service-item active">Performance-маркетинг</li>
+                        <li data-target="2" class="service-item">Арбитраж трафика (PPC)</li>
+                        <li data-target="3" class="service-item">Автоматизация работы колл-центра</li>
+                        <li data-target="4" class="service-item">Разработка сайтов и сервисов</li>
+                        <li data-target="5" class="service-item">Внедрение CRM</li>
+                        <li data-target="6" class="service-item">Внедрение сквозной аналитики</li>
+                        <li data-target="7" class="service-item">Бот с искусственным интеллектом</li>
+                        <li data-target="8" class="service-item">SEO</li>
+                        <li data-target="9" class="service-item">Техподдержка</li>
+                        <li data-target="10" class="service-item">Брендинг</li>
                     </ul>
-                    <div class="service-body">
+                    <div data-body="1" class="service-body active">
                         <div class="service-text-container">
                             <ul class="service-text-list">
                                 <li class="service-text-item">Согласуем медиаплан с количеством и стоимостью лидов.</li>
@@ -333,15 +367,32 @@
                                 <h4 class="calc-heading-text">Рассчитайте свое вознаграждение</h4>
                                 <div class="calc-heading-tooltip">
                                     <div class="tooltip-icon">?</div>
-                                    <div class="tooltip-popup"></div>
+                                    <div class="tooltip-popup">
+                                        <strong>Пример расчета</strong> <br />
+                                        <br />
+                                        <span>
+                                            Услуга: Performance-маркетинг <br />
+                                            Ежемесячный бюджет проекта: 2 000 000 ₽ <br />
+                                            Прибыль: 400 000 ₽ (20% от бюджета) <br />
+                                            Ваш доход: 40 000 ₽ ежемесячно (10% от прибыли) <br />
+                                            <br />
+                                            Услуга: Разработка сайтов и сервисов <br />
+                                            Бюджет проекта: 1 500 000 ₽ <br />
+                                            Прибыль: 750 000 ₽ (50% от бюджета) <br />
+                                            Ваш доход: 75 000 ₽ единоразово (10% от прибыли)</span
+                                        >
+                                        <br />
+                                        <br />
+                                        <strong>Итоговый доход: 115 000 ₽</strong>
+                                    </div>
                                 </div>
                             </div>
                             <form class="calc-form">
                                 <div class="project-budget-wrapper input-number-wrapper">
-                                    <label class="input-caption" for="project-budget">Бюджет проекта</label>
+                                    <label class="input-caption" for="project-budget">Ежемесячный бюджет проекта</label>
                                     <input
                                         type="text"
-                                        class="input-number"
+                                        class="input-number input-budget"
                                         id="project-budget"
                                         name="project-budget"
                                         min="500000"
@@ -359,11 +410,660 @@
                                 </div>
                                 <div class="contract-term-wrapper input-number-wrapper">
                                     <label class="input-caption" for="contract-term">Срок</label>
-                                    <input type="text" class="input-number" id="contract-term" name="contract-term" min="1" max="6" value="1" />
+                                    <input type="text" class="input-number input-term" name="contract-term" min="1" max="6" value="1" />
                                     <span class="range-wrapper">
                                         <span class="range-relative-container">
                                             <span class="range-progress"></span>
                                             <input class="input-range" type="range" min="1" max="6" value="1" />
+                                        </span>
+                                    </span>
+                                </div>
+                            </form>
+                            <div class="calc-result-container">
+                                <small class="calc-result-decription">Вознаграждение*</small>
+                                <strong class="calc-result-value">8 500 ₽</strong>
+                                <small class="calc-result-disclaimer">*Не является публичной оффертой. Расчет является приблизительным.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-body="2" class="service-body">
+                        <div class="service-text-container">
+                            <ul class="service-text-list">
+                                <li class="service-text-item">Согласуем критерии, количество и стоимость целевых звонков.</li>
+                                <li class="service-text-item">Разрабатываем посадочные страницы.</li>
+                                <li class="service-text-item">Создаем баннеры и объявления.</li>
+                                <li class="service-text-item">Настраиваем рекламные кампании.</li>
+                                <li class="service-text-item">Обрабатываем звонки в собственном автоматизированном колл-центре.</li>
+                                <li class="service-text-item">Передаем клиенту только целевые звонки.</li>
+                            </ul>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="calc-container">
+                            <div class="calc-heading">
+                                <h4 class="calc-heading-text">Рассчитайте свое вознаграждение</h4>
+                                <div class="calc-heading-tooltip">
+                                    <div class="tooltip-icon">?</div>
+                                    <div class="tooltip-popup">
+                                        <strong>Пример расчета</strong> <br />
+                                        <br />
+                                        <span>
+                                            Услуга: Performance-маркетинг <br />
+                                            Ежемесячный бюджет проекта: 2 000 000 ₽ <br />
+                                            Прибыль: 400 000 ₽ (20% от бюджета) <br />
+                                            Ваш доход: 40 000 ₽ ежемесячно (10% от прибыли) <br />
+                                            <br />
+                                            Услуга: Разработка сайтов и сервисов <br />
+                                            Бюджет проекта: 1 500 000 ₽ <br />
+                                            Прибыль: 750 000 ₽ (50% от бюджета) <br />
+                                            Ваш доход: 75 000 ₽ единоразово (10% от прибыли)</span
+                                        >
+                                        <br />
+                                        <br />
+                                        <strong>Итоговый доход: 115 000 ₽</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="calc-form">
+                                <div class="project-budget-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="project-budget">Ежемесячный бюджет проекта</label>
+                                    <input
+                                        type="text"
+                                        class="input-number input-budget"
+                                        id="project-budget"
+                                        name="project-budget"
+                                        min="500000"
+                                        max="5000000"
+                                        value="500000"
+                                    />
+                                    <input type="text" style="display: none" hidden name="profit-percent" value="0.5" />
+                                    <input type="text" style="display: none" hidden name="profit-breakpoints" value="[0.1, 0.05]" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" step="100000" />
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="contract-term-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="contract-term">Срок</label>
+                                    <input type="text" class="input-number input-term" name="contract-term" min="1" max="6" value="1" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="1" max="6" value="1" />
+                                        </span>
+                                    </span>
+                                </div>
+                            </form>
+                            <div class="calc-result-container">
+                                <small class="calc-result-decription">Вознаграждение*</small>
+                                <strong class="calc-result-value">8 500 ₽</strong>
+                                <small class="calc-result-disclaimer">*Не является публичной оффертой. Расчет является приблизительным.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-body="3" class="service-body">
+                        <div class="service-text-container">
+                            <p class="service-text-p">
+                                В 2021 году мы разработали и запустили Liner — сервис автоматической квалификации лидов. Он работает на рынке РФ и
+                                ОАЭ. Liner автоматизирует всю очередь звонков и работу операторов. Оператор одним кликом принимает звонок, выбирает
+                                интерактивный скрипт, квалифицирует лид. Liner передает лид в CRM.
+                            </p>
+                            <ul class="service-text-list">
+                                <li class="service-text-item">Создаем техзадание на внедрение.</li>
+                                <li class="service-text-item">Регистрируем и настраиваем кабинет в UIS.</li>
+                                <li class="service-text-item">Разворачиваем экземпляр коробки на сервере.</li>
+                                <li class="service-text-item">Корректируем конфигурационные файлы коробки.</li>
+                                <li class="service-text-item">Запускаем коробку, проверяем работоспособность.</li>
+                                <li class="service-text-item">Оптимизируем коробку под требования клиента.</li>
+                                <li class="service-text-item">Проводим обучение операторов.</li>
+                                <li class="service-text-item">Берем сервис на техподдержку.</li>
+                            </ul>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="calc-container">
+                            <div class="calc-heading">
+                                <h4 class="calc-heading-text">Рассчитайте свое вознаграждение</h4>
+                                <div class="calc-heading-tooltip">
+                                    <div class="tooltip-icon">?</div>
+                                    <div class="tooltip-popup">
+                                        <strong>Пример расчета</strong> <br />
+                                        <br />
+                                        <span>
+                                            Услуга: Performance-маркетинг <br />
+                                            Ежемесячный бюджет проекта: 2 000 000 ₽ <br />
+                                            Прибыль: 400 000 ₽ (20% от бюджета) <br />
+                                            Ваш доход: 40 000 ₽ ежемесячно (10% от прибыли) <br />
+                                            <br />
+                                            Услуга: Разработка сайтов и сервисов <br />
+                                            Бюджет проекта: 1 500 000 ₽ <br />
+                                            Прибыль: 750 000 ₽ (50% от бюджета) <br />
+                                            Ваш доход: 75 000 ₽ единоразово (10% от прибыли)</span
+                                        >
+                                        <br />
+                                        <br />
+                                        <strong>Итоговый доход: 115 000 ₽</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="calc-form">
+                                <div class="project-budget-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="project-budget">Ежемесячный бюджет проекта</label>
+                                    <input
+                                        type="text"
+                                        class="input-number input-budget"
+                                        id="project-budget"
+                                        name="project-budget"
+                                        min="500000"
+                                        max="5000000"
+                                        value="500000"
+                                    />
+                                    <input type="text" style="display: none" hidden name="profit-percent" value="1" />
+                                    <input type="text" style="display: none" hidden name="profit-breakpoints" value="[0.1, 0.05]" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" step="100000" />
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="contract-term-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="contract-term">Срок</label>
+                                    <input type="text" class="input-number input-term" name="contract-term" min="1" max="6" value="1" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="1" max="6" value="1" />
+                                        </span>
+                                    </span>
+                                </div>
+                            </form>
+                            <div class="calc-result-container">
+                                <small class="calc-result-decription">Вознаграждение*</small>
+                                <strong class="calc-result-value">8 500 ₽</strong>
+                                <small class="calc-result-disclaimer">*Не является публичной оффертой. Расчет является приблизительным.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-body="4" class="service-body">
+                        <div class="service-text-container">
+                            <ul class="service-text-list">
+                                <li class="service-text-item">
+                                    Разрабатываем лендинги, квизы, каталоги, корпоративные сайты, сервисы записи на выдачу ключей, квартирограммы.
+                                </li>
+                                <li class="service-text-item">Учитываем тенденции UX/UI-дизайна и фирстиль бренда.</li>
+                                <li class="service-text-item">Адаптируем сайт под все устройства.</li>
+                                <li class="service-text-item">Подключаем цели и сервисы аналитики.</li>
+                                <li class="service-text-item">Интегрируем сайт с CRM.</li>
+                            </ul>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="calc-container">
+                            <div class="calc-heading">
+                                <h4 class="calc-heading-text">Рассчитайте свое вознаграждение</h4>
+                                <div class="calc-heading-tooltip">
+                                    <div class="tooltip-icon">?</div>
+                                    <div class="tooltip-popup">
+                                        <strong>Пример расчета</strong> <br />
+                                        <br />
+                                        <span>
+                                            Услуга: Performance-маркетинг <br />
+                                            Ежемесячный бюджет проекта: 2 000 000 ₽ <br />
+                                            Прибыль: 400 000 ₽ (20% от бюджета) <br />
+                                            Ваш доход: 40 000 ₽ ежемесячно (10% от прибыли) <br />
+                                            <br />
+                                            Услуга: Разработка сайтов и сервисов <br />
+                                            Бюджет проекта: 1 500 000 ₽ <br />
+                                            Прибыль: 750 000 ₽ (50% от бюджета) <br />
+                                            Ваш доход: 75 000 ₽ единоразово (10% от прибыли)</span
+                                        >
+                                        <br />
+                                        <br />
+                                        <strong>Итоговый доход: 115 000 ₽</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="calc-form">
+                                <div class="project-budget-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="project-budget">Бюджет проекта</label>
+                                    <input
+                                        type="text"
+                                        class="input-number input-budget"
+                                        id="project-budget"
+                                        name="project-budget"
+                                        min="500000"
+                                        max="5000000"
+                                        value="500000"
+                                    />
+                                    <input type="text" style="display: none" hidden name="profit-percent" value="0.5" />
+                                    <input type="text" style="display: none" hidden name="profit-breakpoints" value="[0.1]" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" step="100000" />
+                                        </span>
+                                    </span>
+                                </div>
+                            </form>
+                            <div class="calc-result-container">
+                                <small class="calc-result-decription">Вознаграждение*</small>
+                                <strong class="calc-result-value">8 500 ₽</strong>
+                                <small class="calc-result-disclaimer">*Не является публичной оффертой. Расчет является приблизительным.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-body="5" class="service-body">
+                        <div class="service-text-container">
+                            <ul class="service-text-list">
+                                <li class="service-text-item">Согласовываем сценарий использования.</li>
+                                <li class="service-text-item">Настраиваем сервер, интегрируем пользователей из систем учета.</li>
+                                <li class="service-text-item">Разрабатываем воронку продаж под каждый бизнес-процесс.</li>
+                                <li class="service-text-item">Добавляем пользователей и настраиваем права.</li>
+                                <li class="service-text-item">Интегрируем CRM с сайтами, телефонией, почтой, 1С и другими сервисами.</li>
+                                <li class="service-text-item">Обучаем сотрудников работе с CRM.</li>
+                            </ul>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="calc-container">
+                            <div class="calc-heading">
+                                <h4 class="calc-heading-text">Рассчитайте свое вознаграждение</h4>
+                                <div class="calc-heading-tooltip">
+                                    <div class="tooltip-icon">?</div>
+                                    <div class="tooltip-popup">
+                                        <strong>Пример расчета</strong> <br />
+                                        <br />
+                                        <span>
+                                            Услуга: Performance-маркетинг <br />
+                                            Ежемесячный бюджет проекта: 2 000 000 ₽ <br />
+                                            Прибыль: 400 000 ₽ (20% от бюджета) <br />
+                                            Ваш доход: 40 000 ₽ ежемесячно (10% от прибыли) <br />
+                                            <br />
+                                            Услуга: Разработка сайтов и сервисов <br />
+                                            Бюджет проекта: 1 500 000 ₽ <br />
+                                            Прибыль: 750 000 ₽ (50% от бюджета) <br />
+                                            Ваш доход: 75 000 ₽ единоразово (10% от прибыли)</span
+                                        >
+                                        <br />
+                                        <br />
+                                        <strong>Итоговый доход: 115 000 ₽</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="calc-form">
+                                <div class="project-budget-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="project-budget">Бюджет проекта</label>
+                                    <input
+                                        type="text"
+                                        class="input-number input-budget"
+                                        id="project-budget"
+                                        name="project-budget"
+                                        min="500000"
+                                        max="5000000"
+                                        value="500000"
+                                    />
+                                    <input type="text" style="display: none" hidden name="profit-percent" value="1" />
+                                    <input type="text" style="display: none" hidden name="profit-breakpoints" value="[0.1]" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" step="100000" />
+                                        </span>
+                                    </span>
+                                </div>
+                            </form>
+                            <div class="calc-result-container">
+                                <small class="calc-result-decription">Вознаграждение*</small>
+                                <strong class="calc-result-value">8 500 ₽</strong>
+                                <small class="calc-result-disclaimer">*Не является публичной оффертой. Расчет является приблизительным.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-body="6" class="service-body">
+                        <div class="service-text-container">
+                            <ul class="service-text-list">
+                                <li class="service-text-item">Интегрируем систему с рекламными кабинетами и CRM.</li>
+                                <li class="service-text-item">Настраиваем формирование отчетов для отображения разных метрик.</li>
+                                <li class="service-text-item">Настраиваем коллтрекинг.</li>
+                                <li class="service-text-item">Обучаем маркетологов использованию сервиса.</li>
+                            </ul>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="calc-container">
+                            <div class="calc-heading">
+                                <h4 class="calc-heading-text">Рассчитайте свое вознаграждение</h4>
+                                <div class="calc-heading-tooltip">
+                                    <div class="tooltip-icon">?</div>
+                                    <div class="tooltip-popup">
+                                        <strong>Пример расчета</strong> <br />
+                                        <br />
+                                        <span>
+                                            Услуга: Performance-маркетинг <br />
+                                            Ежемесячный бюджет проекта: 2 000 000 ₽ <br />
+                                            Прибыль: 400 000 ₽ (20% от бюджета) <br />
+                                            Ваш доход: 40 000 ₽ ежемесячно (10% от прибыли) <br />
+                                            <br />
+                                            Услуга: Разработка сайтов и сервисов <br />
+                                            Бюджет проекта: 1 500 000 ₽ <br />
+                                            Прибыль: 750 000 ₽ (50% от бюджета) <br />
+                                            Ваш доход: 75 000 ₽ единоразово (10% от прибыли)</span
+                                        >
+                                        <br />
+                                        <br />
+                                        <strong>Итоговый доход: 115 000 ₽</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="calc-form">
+                                <div class="project-budget-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="project-budget">Бюджет проекта</label>
+                                    <input
+                                        type="text"
+                                        class="input-number input-budget"
+                                        id="project-budget"
+                                        name="project-budget"
+                                        min="500000"
+                                        max="5000000"
+                                        value="500000"
+                                    />
+                                    <input type="text" style="display: none" hidden name="profit-percent" value="1" />
+                                    <input type="text" style="display: none" hidden name="profit-breakpoints" value="[0.1]" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" step="100000" />
+                                        </span>
+                                    </span>
+                                </div>
+                            </form>
+                            <div class="calc-result-container">
+                                <small class="calc-result-decription">Вознаграждение*</small>
+                                <strong class="calc-result-value">8 500 ₽</strong>
+                                <small class="calc-result-disclaimer">*Не является публичной оффертой. Расчет является приблизительным.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-body="7" class="service-body">
+                        <div class="service-text-container">
+                            <p class="service-text-p">
+                                Мы разработали бота на основе Chat GPT. Бот инициирует и разумно ведет диалог, выясняет потребности клиента, ведет его
+                                к целевому действию, квалифицирует лид без участия человека.
+                            </p>
+                            <ul class="service-text-list">
+                                <li class="service-text-item">Загружаем боту базу недвижимости/автомобилей, которые он будет предлагать клиенту.</li>
+                                <li class="service-text-item">Прописываем обязательные и необязательные вопросы, которые бот задаст клиенту.</li>
+                                <li class="service-text-item">Задаем боту язык для общения: русский, английский или любой другой.</li>
+                                <li class="service-text-item">
+                                    Ограничиваем тему разговора (например, только о недвижимости или только об автомобилях).
+                                </li>
+                                <li class="service-text-item">Прописываем целевое действие, к которому бот должен побудить клиента.</li>
+                                <li class="service-text-item">Интегрируем бота с CRM, куда он передает лиды.</li>
+                            </ul>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="calc-container">
+                            <div class="calc-heading">
+                                <h4 class="calc-heading-text">Рассчитайте свое вознаграждение</h4>
+                                <div class="calc-heading-tooltip">
+                                    <div class="tooltip-icon">?</div>
+                                    <div class="tooltip-popup">
+                                        <strong>Пример расчета</strong> <br />
+                                        <br />
+                                        <span>
+                                            Услуга: Performance-маркетинг <br />
+                                            Ежемесячный бюджет проекта: 2 000 000 ₽ <br />
+                                            Прибыль: 400 000 ₽ (20% от бюджета) <br />
+                                            Ваш доход: 40 000 ₽ ежемесячно (10% от прибыли) <br />
+                                            <br />
+                                            Услуга: Разработка сайтов и сервисов <br />
+                                            Бюджет проекта: 1 500 000 ₽ <br />
+                                            Прибыль: 750 000 ₽ (50% от бюджета) <br />
+                                            Ваш доход: 75 000 ₽ единоразово (10% от прибыли)</span
+                                        >
+                                        <br />
+                                        <br />
+                                        <strong>Итоговый доход: 115 000 ₽</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="calc-form">
+                                <div class="project-budget-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="project-budget">Бюджет проекта</label>
+                                    <input
+                                        type="text"
+                                        class="input-number input-budget"
+                                        id="project-budget"
+                                        name="project-budget"
+                                        min="500000"
+                                        max="5000000"
+                                        value="500000"
+                                    />
+                                    <input type="text" style="display: none" hidden name="profit-percent" value="1" />
+                                    <input type="text" style="display: none" hidden name="profit-breakpoints" value="[0.1]" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" step="100000" />
+                                        </span>
+                                    </span>
+                                </div>
+                            </form>
+                            <div class="calc-result-container">
+                                <small class="calc-result-decription">Вознаграждение*</small>
+                                <strong class="calc-result-value">8 500 ₽</strong>
+                                <small class="calc-result-disclaimer">*Не является публичной оффертой. Расчет является приблизительным.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-body="8" class="service-body">
+                        <div class="service-text-container">
+                            <ul class="service-text-list">
+                                <li class="service-text-item">Проводим аудит, описываем ошибки и проблемы.</li>
+                                <li class="service-text-item">Увеличиваем скорость загрузки сайта.</li>
+                                <li class="service-text-item">Создаем и публикуем информационные статьи.</li>
+                                <li class="service-text-item">Прорабатываем дизайн на основе аналитики.</li>
+                                <li class="service-text-item">Реализуем Link building для получения обратных ссылок на сайт.</li>
+                            </ul>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="calc-container">
+                            <div class="calc-heading">
+                                <h4 class="calc-heading-text">Рассчитайте свое вознаграждение</h4>
+                                <div class="calc-heading-tooltip">
+                                    <div class="tooltip-icon">?</div>
+                                    <div class="tooltip-popup">
+                                        <strong>Пример расчета</strong> <br />
+                                        <br />
+                                        <span>
+                                            Услуга: Performance-маркетинг <br />
+                                            Ежемесячный бюджет проекта: 2 000 000 ₽ <br />
+                                            Прибыль: 400 000 ₽ (20% от бюджета) <br />
+                                            Ваш доход: 40 000 ₽ ежемесячно (10% от прибыли) <br />
+                                            <br />
+                                            Услуга: Разработка сайтов и сервисов <br />
+                                            Бюджет проекта: 1 500 000 ₽ <br />
+                                            Прибыль: 750 000 ₽ (50% от бюджета) <br />
+                                            Ваш доход: 75 000 ₽ единоразово (10% от прибыли)</span
+                                        >
+                                        <br />
+                                        <br />
+                                        <strong>Итоговый доход: 115 000 ₽</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="calc-form">
+                                <div class="project-budget-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="project-budget">Ежемесячный бюджет проекта</label>
+                                    <input
+                                        type="text"
+                                        class="input-number input-budget"
+                                        id="project-budget"
+                                        name="project-budget"
+                                        min="500000"
+                                        max="5000000"
+                                        value="500000"
+                                    />
+                                    <input type="text" style="display: none" hidden name="profit-percent" value="1" />
+                                    <input type="text" style="display: none" hidden name="profit-breakpoints" value="[0.1, 0.05]" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" step="100000" />
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="contract-term-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="contract-term">Срок</label>
+                                    <input type="text" class="input-number input-term" name="contract-term" min="1" max="6" value="1" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="1" max="6" value="1" />
+                                        </span>
+                                    </span>
+                                </div>
+                            </form>
+                            <div class="calc-result-container">
+                                <small class="calc-result-decription">Вознаграждение*</small>
+                                <strong class="calc-result-value">8 500 ₽</strong>
+                                <small class="calc-result-disclaimer">*Не является публичной оффертой. Расчет является приблизительным.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-body="9" class="service-body">
+                        <div class="service-text-container">
+                            <ul class="service-text-list">
+                                <li class="service-text-item">Берем на техподдержку сайты, CRM, системы сквозной аналитики, Liner, BI-системы.</li>
+                                <li class="service-text-item">Обеспечиваем работоспособность сайта/системы/сервиса.</li>
+                                <li class="service-text-item">Делаем ежедневные бэкапы.</li>
+                                <li class="service-text-item">Дорабатываем текущие и внедряем новые сервисы.</li>
+                                <li class="service-text-item">Работаем с контентом.</li>
+                                <li class="service-text-item">Составляем ежемесячные отчеты.</li>
+                                <li class="service-text-item">Предлагаем разные тарифы.</li>
+                            </ul>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="calc-container">
+                            <div class="calc-heading">
+                                <h4 class="calc-heading-text">Рассчитайте свое вознаграждение</h4>
+                                <div class="calc-heading-tooltip">
+                                    <div class="tooltip-icon">?</div>
+                                    <div class="tooltip-popup">
+                                        <strong>Пример расчета</strong> <br />
+                                        <br />
+                                        <span>
+                                            Услуга: Performance-маркетинг <br />
+                                            Ежемесячный бюджет проекта: 2 000 000 ₽ <br />
+                                            Прибыль: 400 000 ₽ (20% от бюджета) <br />
+                                            Ваш доход: 40 000 ₽ ежемесячно (10% от прибыли) <br />
+                                            <br />
+                                            Услуга: Разработка сайтов и сервисов <br />
+                                            Бюджет проекта: 1 500 000 ₽ <br />
+                                            Прибыль: 750 000 ₽ (50% от бюджета) <br />
+                                            Ваш доход: 75 000 ₽ единоразово (10% от прибыли)</span
+                                        >
+                                        <br />
+                                        <br />
+                                        <strong>Итоговый доход: 115 000 ₽</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="calc-form">
+                                <div class="project-budget-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="project-budget">Ежемесячный бюджет проекта</label>
+                                    <input
+                                        type="text"
+                                        class="input-number input-budget"
+                                        id="project-budget"
+                                        name="project-budget"
+                                        min="500000"
+                                        max="5000000"
+                                        value="500000"
+                                    />
+                                    <input type="text" style="display: none" hidden name="profit-percent" value="1" />
+                                    <input type="text" style="display: none" hidden name="profit-breakpoints" value="[0.1, 0.05]" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" step="100000" />
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="contract-term-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="contract-term">Срок</label>
+                                    <input type="text" class="input-number input-term" name="contract-term" min="1" max="6" value="1" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="1" max="6" value="1" />
+                                        </span>
+                                    </span>
+                                </div>
+                            </form>
+                            <div class="calc-result-container">
+                                <small class="calc-result-decription">Вознаграждение*</small>
+                                <strong class="calc-result-value">8 500 ₽</strong>
+                                <small class="calc-result-disclaimer">*Не является публичной оффертой. Расчет является приблизительным.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-body="10" class="service-body">
+                        <div class="service-text-container">
+                            <ul class="service-text-list">
+                                <li class="service-text-item">Формируем бренд с нуля или делаем ребрендинг.</li>
+                                <li class="service-text-item">Проводим детальное брифование.</li>
+                                <li class="service-text-item">Формулируем ценности и миссию бренда.</li>
+                                <li class="service-text-item">Формируем и описываем TOV.</li>
+                                <li class="service-text-item">
+                                    Разрабатываем айдентику: название, логотип, слоган, цвета, паттерны, типографику, иллюстрации.
+                                </li>
+                                <li class="service-text-item">Создаем брендбук.</li>
+                                <li class="service-text-item">Делаем дизайн полиграфии.</li>
+                            </ul>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="calc-container">
+                            <div class="calc-heading">
+                                <h4 class="calc-heading-text">Рассчитайте свое вознаграждение</h4>
+                                <div class="calc-heading-tooltip">
+                                    <div class="tooltip-icon">?</div>
+                                    <div class="tooltip-popup">
+                                        <strong>Пример расчета</strong> <br />
+                                        <br />
+                                        <span>
+                                            Услуга: Performance-маркетинг <br />
+                                            Ежемесячный бюджет проекта: 2 000 000 ₽ <br />
+                                            Прибыль: 400 000 ₽ (20% от бюджета) <br />
+                                            Ваш доход: 40 000 ₽ ежемесячно (10% от прибыли) <br />
+                                            <br />
+                                            Услуга: Разработка сайтов и сервисов <br />
+                                            Бюджет проекта: 1 500 000 ₽ <br />
+                                            Прибыль: 750 000 ₽ (50% от бюджета) <br />
+                                            Ваш доход: 75 000 ₽ единоразово (10% от прибыли)</span
+                                        >
+                                        <br />
+                                        <br />
+                                        <strong>Итоговый доход: 115 000 ₽</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="calc-form">
+                                <div class="project-budget-wrapper input-number-wrapper">
+                                    <label class="input-caption" for="project-budget">Бюджет проекта</label>
+                                    <input
+                                        type="text"
+                                        class="input-number input-budget"
+                                        id="project-budget"
+                                        name="project-budget"
+                                        min="500000"
+                                        max="5000000"
+                                        value="500000"
+                                    />
+                                    <input type="text" style="display: none" hidden name="profit-percent" value="0.5" />
+                                    <input type="text" style="display: none" hidden name="profit-breakpoints" value="[0.1]" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" step="100000" />
                                         </span>
                                     </span>
                                 </div>
@@ -380,7 +1080,17 @@
             </div>
         </section>
         <script>
-            $('.input-number').mask('0 000 000', { reverse: true });
+            // Обработка табов
+            $('.service-item').click((e) => {
+                $('.service-item').removeClass('active');
+                $('.service-body').removeClass('active');
+                $(e.target).addClass('active');
+                $(`[data-body="${$(e.target).data('target')}"]`).addClass('active');
+            });
+
+            // Обработка инпутов
+            $('.input-budget').mask('0 000 000', { reverse: true });
+            $('.input-term').mask('0', { translation: { 0: { pattern: /[1-6*]/ } } });
             $('.input-number').on('input', (e) => {
                 $(e.target)
                     .parents('.input-number-wrapper')
@@ -394,17 +1104,18 @@
                     .width(`${((e.target.value - e.target.min) / (e.target.max - e.target.min)) * 100}%`);
             });
 
+            // Обработка формы
             $('.calc-form').on('input', (e) => {
                 const form = $(e.currentTarget);
                 const resultContainer = form.siblings('.calc-result-container');
                 const resultNode = resultContainer.find('.calc-result-value');
                 const data = form.serializeArray();
 
-                const budget = parseInt(String(data[0].value).split(' ').join(''));
-                const profitPercent = Number(data[1].value);
+                const budget = parseInt(String(data[0]?.value).split(' ').join(''));
+                const profitPercent = Number(data[1]?.value);
                 const profit = budget * profitPercent;
-                const termBreakpoints = JSON.parse(data[2].value);
-                const contractTerm = Number(data[3].value);
+                const termBreakpoints = JSON.parse(data[2]?.value);
+                const contractTerm = Number(data[3]?.value) || 1;
 
                 let result;
 
