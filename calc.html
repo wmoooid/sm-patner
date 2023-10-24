@@ -6,8 +6,8 @@
         <title>Document</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/1.1.9/js/libs/jquery-1.10.2.min.js"></script>
     </head>
-
     <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
         <style>
             .calc {
                 font-family: 'Nunito Sans', Arial, Helvetica, sans-serif;
@@ -21,6 +21,9 @@
             .calc ul {
                 list-style: none;
                 margin: 0;
+            }
+            .calc input:focus-visible {
+                outline: 1px solid #ff9126;
             }
             .container {
                 max-width: 1200px;
@@ -137,7 +140,7 @@
                 content: '₽';
                 color: #888;
                 position: absolute;
-                right: 16px;я
+                right: 16px;
                 bottom: 12px;
             }
             .contract-term-wrapper::after {
@@ -178,19 +181,6 @@
                 background-color: #ff9126;
                 border-radius: 10px;
             }
-            /* .range-progress::after {
-                content: '';
-                position: absolute;
-                top: -9px;
-                right: -9px;
-                display: block;
-                width: 16px;
-                height: 16px;
-                background-color: #fff;
-                border-radius: 100px;
-                border: 3px solid #ff9126;
-                cursor: pointer;
-            } */
             .input-range {
                 position: absolute;
                 left: -4px;
@@ -200,7 +190,6 @@
                 height: 0px;
                 width: 100%;
             }
-
             .radio-container {
                 display: flex;
                 gap: 8px;
@@ -248,14 +237,10 @@
                 line-height: 115%;
                 letter-spacing: -0.02em;
             }
-            /* .calc-result-value::after {
-                content: ' ₽';
-            } */
             .calc-result-disclaimer {
                 color: rgba(51, 51, 51, 0.5);
                 font-size: 10px;
             }
-
             .sum-caption {
                 color: #999;
                 margin-top: 16px;
@@ -352,7 +337,7 @@
                                 </div>
                             </div>
                             <form class="calc-form">
-                                <div class="project-budget-wrapper">
+                                <div class="project-budget-wrapper input-number-wrapper">
                                     <label class="input-caption" for="project-budget">Бюджет проекта</label>
                                     <input
                                         type="text"
@@ -361,17 +346,18 @@
                                         name="project-budget"
                                         min="500000"
                                         max="5000000"
-                                        value="500 000"
+                                        value="500000"
                                     />
-                                    <input type="text" style="display: none" hidden name="breakpoints" value="[1000000, 2000000, 3000000]" />
+                                    <input type="text" style="display: none" hidden name="profit-percent" value="0.2" />
+                                    <input type="text" style="display: none" hidden name="profit-breakpoints" value="[0.1, 0.05]" />
                                     <span class="range-wrapper">
                                         <span class="range-relative-container">
                                             <span class="range-progress"></span>
-                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" />
+                                            <input class="input-range" type="range" min="500000" max="5000000" value="500000" step="100000" />
                                         </span>
                                     </span>
                                 </div>
-                                <div class="contract-term-wrapper">
+                                <div class="contract-term-wrapper input-number-wrapper">
                                     <label class="input-caption" for="contract-term">Срок</label>
                                     <input type="text" class="input-number" id="contract-term" name="contract-term" min="1" max="6" value="1" />
                                     <span class="range-wrapper">
@@ -381,36 +367,6 @@
                                         </span>
                                     </span>
                                 </div>
-                                <!-- <div class="contract-term">
-                                    <span class="input-caption">Срок</span>
-                                    <div class="radio-container">
-                                        <div class="radio-wrapper">
-                                            <input
-                                                type="radio"
-                                                class="input-radio"
-                                                name="contract-term"
-                                                id="contract-term-1-3"
-                                                value="[0.017, 0.02, 0.022]"
-                                                checked
-                                            />
-                                            <label class="radio-label active" for="contract-term-1-3">1-3 мес.</label>
-                                        </div>
-                                        <div class="radio-wrapper">
-                                            <input
-                                                type="radio"
-                                                class="input-radio"
-                                                name="contract-term"
-                                                id="contract-term-4-6"
-                                                value="[0.014, 0.017, 0.02]"
-                                            />
-                                            <label class="radio-label" for="contract-term-4-6">4-6 мес.</label>
-                                        </div>
-                                        <div class="radio-wrapper">
-                                            <input type="radio" class="input-radio" name="contract-term" id="contract-term-unlim" value="[0, 0, 0]" />
-                                            <label class="radio-label" for="contract-term-unlim">Бессрочно</label>
-                                        </div>
-                                    </div>
-                                </div> -->
                             </form>
                             <div class="calc-result-container">
                                 <small class="calc-result-decription">Вознаграждение*</small>
@@ -424,39 +380,44 @@
             </div>
         </section>
         <script>
+            $('.input-number').mask('0 000 000', { reverse: true });
+            $('.input-number').on('input', (e) => {
+                $(e.target)
+                    .parents('.input-number-wrapper')
+                    .find('.input-range')
+                    .val(Number($(e.target).cleanVal()));
+            });
+            $('.input-range').on('input', (e) => {
+                $(e.target).parents('.input-number-wrapper').find('.input-number').val($('.input-number').masked(e.target.value));
+                $(e.target)
+                    .siblings('.range-progress')
+                    .width(`${((e.target.value - e.target.min) / (e.target.max - e.target.min)) * 100}%`);
+            });
+
             $('.calc-form').on('input', (e) => {
                 const form = $(e.currentTarget);
                 const resultContainer = form.siblings('.calc-result-container');
                 const resultNode = resultContainer.find('.calc-result-value');
-                let data = form.serializeArray();
-                profit = parseInt(String(data[0].value).split(' ').join(''));
-                breakpointsArr = JSON.parse(data[1].value);
-                termArr = JSON.parse(data[2].value);
-                let factor = termArr[0];
-                if (profit > breakpointsArr[0]) factor = termArr[1];
-                if (profit > breakpointsArr[1]) factor = termArr[2];
+                const data = form.serializeArray();
 
-                if (factor === 0) {
-                    resultNode.text('Индивидуально');
-                    return;
+                const budget = parseInt(String(data[0].value).split(' ').join(''));
+                const profitPercent = Number(data[1].value);
+                const profit = budget * profitPercent;
+                const termBreakpoints = JSON.parse(data[2].value);
+                const contractTerm = Number(data[3].value);
+
+                let result;
+
+                if (contractTerm < 4) {
+                    result = Math.floor(profit * termBreakpoints[0] * contractTerm);
+                } else {
+                    result = Math.floor(profit * termBreakpoints[0] * 3 + profit * termBreakpoints[1] * (contractTerm - 3));
                 }
 
-                const result = Math.floor(profit * factor);
                 resultNode.text(result.toLocaleString('ru-RU') + ' ₽');
             });
 
-            const profitInput = document.querySelector('#project-budget');
-            const inputRange = document.querySelector('.input-range');
-            const rangeProgress = document.querySelector('.range-progress');
-            rangeProgress.style.width = `${((profitInput.value - profitInput.min) / (profitInput.max - profitInput.min)) * 100}%`;
-            profitInput.addEventListener('input', (e) => {
-                rangeProgress.style.width = `${((e.target.value - e.target.min) / (e.target.max - e.target.min)) * 100}%`;
-                inputRange.value = e.target.value;
-            });
-            inputRange.addEventListener('input', (e) => {
-                profitInput.value = Number(e.target.value).toLocaleString('ru-RU');
-                rangeProgress.style.width = `${((e.target.value - e.target.min) / (e.target.max - e.target.min)) * 100}%`;
-            });
+            $('.calc-form').trigger('input');
         </script>
     </body>
 </html>
