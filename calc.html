@@ -42,6 +42,7 @@
                 gap: 20px;
                 padding: 32px 0 !important;
                 width: 375px;
+                min-width: 240px;
                 flex: none;
 
                 border-right: 1px solid rgba(0, 0, 0, 0.07);
@@ -52,7 +53,7 @@
                 align-items: flex-start;
                 align-self: stretch;
                 gap: 8px;
-                padding: 12px 32px;
+                padding: 13px 32px;
 
                 font-weight: 400;
                 line-height: 120%;
@@ -89,6 +90,7 @@
             }
             .service-text-p {
                 margin-top: 0;
+                margin-bottom: 12px;
             }
             .calc .service-text-list li::marker {
                 color: #ff9126;
@@ -280,35 +282,33 @@
                 font-size: 14px;
                 text-align: center;
             }
-            @media screen and (max-width: 480px) {
+            @media screen and (max-width: 1200px) {
+                .serivce-list {
+                    width: unset;
+                    flex: auto;
+                    gap: 8px;
+                }
+                .project-budget-wrapper,
+                .contract-term-wrapper {
+                    flex: auto;
+                }
+                .input-number {
+                    width: 100%;
+                }
+                .calc-form {
+                    flex-wrap: wrap;
+                }
+            }
+            @media screen and (max-width: 960px) {
                 .container {
                     padding: 0 10px;
-                }
-                .wrapper {
-                    flex-direction: column;
-                }
-                .serivce-list {
-                    padding: 8px 0 !important;
-                    width: 100%;
-                    gap: 0;
-                    border-right: none;
-                    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
                 }
                 .service-item {
                     font-size: 16px;
                     padding: 8px 16px;
                 }
-                .calc-form {
-                    flex-direction: column;
-                    gap: 16px;
-                    margin-bottom: 16px;
-                }
-                .service-body {
-                    padding: 12px;
-                    gap: 16px;
-                }
-                .service-text-list {
-                    padding-inline-start: 16px;
+                .service-text-p {
+                    font-size: 16px;
                 }
                 .service-text-item {
                     font-size: 16px;
@@ -318,17 +318,48 @@
                 }
                 .input-number {
                     font-size: 16px;
-                    width: 100%;
                 }
                 .radio-label {
                     font-size: 16px;
                 }
+                .calc-result-value {
+                    font-size: 32px;
+                }
+                .service-body {
+                    padding: 12px;
+                    gap: 16px;
+                }
+                .serivce-list {
+                    padding: 8px 0 !important;
+                }
+            }
+            @media screen and (max-width: 640px) {
+                .wrapper {
+                    flex-direction: column;
+                }
+                .serivce-list {
+                    width: 100%;
+                    gap: 0;
+                    border-right: none;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+                }
+
+                .calc-form {
+                    flex-direction: column;
+                    gap: 16px;
+                    margin-bottom: 16px;
+                }
+
+                .service-text-list {
+                    padding-inline-start: 16px;
+                }
+
                 .calc-result-container {
                     padding: 12px 16px;
                     background-image: none;
                 }
-                .calc-result-value {
-                    font-size: 32px;
+                .service-text-p {
+                    display: none;
                 }
             }
         </style>
@@ -503,7 +534,7 @@
                         </div>
                     </div>
                     <div data-body="3" class="service-body">
-                        <div class="service-text-container">
+                        <div class="service-text-container" style="line-height: 130%">
                             <p class="service-text-p">
                                 В 2021 году мы разработали и запустили Liner — сервис автоматической квалификации лидов. Он работает на рынке РФ и
                                 ОАЭ. Liner автоматизирует всю очередь звонков и работу операторов. Оператор одним кликом принимает звонок, выбирает
@@ -512,12 +543,10 @@
                             <ul class="service-text-list">
                                 <li class="service-text-item">Создаем техзадание на внедрение.</li>
                                 <li class="service-text-item">Регистрируем и настраиваем кабинет в UIS.</li>
-                                <li class="service-text-item">Разворачиваем экземпляр коробки на сервере.</li>
-                                <li class="service-text-item">Корректируем конфигурационные файлы коробки.</li>
+                                <li class="service-text-item">Разворачиваем и настраиваем экземпляр коробки на сервере.</li>
                                 <li class="service-text-item">Запускаем коробку, проверяем работоспособность.</li>
                                 <li class="service-text-item">Оптимизируем коробку под требования клиента.</li>
-                                <li class="service-text-item">Проводим обучение операторов.</li>
-                                <li class="service-text-item">Берем сервис на техподдержку.</li>
+                                <li class="service-text-item">Проводим обучение операторов и проводим техподдержку.</li>
                             </ul>
                         </div>
                         <div class="divider"></div>
@@ -789,12 +818,10 @@
                                 к целевому действию, квалифицирует лид без участия человека.
                             </p>
                             <ul class="service-text-list">
-                                <li class="service-text-item">Загружаем боту базу недвижимости/автомобилей, которые он будет предлагать клиенту.</li>
-                                <li class="service-text-item">Прописываем обязательные и необязательные вопросы, которые бот задаст клиенту.</li>
+                                <li class="service-text-item">Загружаем боту базу недвижимости/авто, которые он будет предлагать клиенту.</li>
+                                <li class="service-text-item">Прописываем обязательные и необязательные вопросы.</li>
                                 <li class="service-text-item">Задаем боту язык для общения: русский, английский или любой другой.</li>
-                                <li class="service-text-item">
-                                    Ограничиваем тему разговора (например, только о недвижимости или только об автомобилях).
-                                </li>
+                                <li class="service-text-item">Ограничиваем тему разговора (например, только о недвижимости).</li>
                                 <li class="service-text-item">Прописываем целевое действие, к которому бот должен побудить клиента.</li>
                                 <li class="service-text-item">Интегрируем бота с CRM, куда он передает лиды.</li>
                             </ul>
