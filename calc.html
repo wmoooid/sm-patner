@@ -114,8 +114,8 @@
             .input-caption {
                 font-size: 14px;
             }
-            .monthly-profit,
-            .contract-term {
+            .project-budget-wrapper,
+            .contract-term-wrapper {
                 display: flex;
                 flex-direction: column;
                 position: relative;
@@ -133,8 +133,15 @@
                 font-size: 18px;
                 font-weight: 500;
             }
-            .monthly-profit::after {
+            .project-budget-wrapper::after {
                 content: '₽';
+                color: #888;
+                position: absolute;
+                right: 16px;я
+                bottom: 12px;
+            }
+            .contract-term-wrapper::after {
+                content: 'мес.';
                 color: #888;
                 position: absolute;
                 right: 16px;
@@ -345,13 +352,13 @@
                                 </div>
                             </div>
                             <form class="calc-form">
-                                <div class="monthly-profit">
-                                    <label class="input-caption" for="monthly-profit">Ежемесячная прибыль</label>
+                                <div class="project-budget-wrapper">
+                                    <label class="input-caption" for="project-budget">Бюджет проекта</label>
                                     <input
                                         type="text"
                                         class="input-number"
-                                        id="monthly-profit"
-                                        name="monthly-profit"
+                                        id="project-budget"
+                                        name="project-budget"
                                         min="500000"
                                         max="5000000"
                                         value="500 000"
@@ -364,7 +371,17 @@
                                         </span>
                                     </span>
                                 </div>
-                                <div class="contract-term">
+                                <div class="contract-term-wrapper">
+                                    <label class="input-caption" for="contract-term">Срок</label>
+                                    <input type="text" class="input-number" id="contract-term" name="contract-term" min="1" max="6" value="1" />
+                                    <span class="range-wrapper">
+                                        <span class="range-relative-container">
+                                            <span class="range-progress"></span>
+                                            <input class="input-range" type="range" min="1" max="6" value="1" />
+                                        </span>
+                                    </span>
+                                </div>
+                                <!-- <div class="contract-term">
                                     <span class="input-caption">Срок</span>
                                     <div class="radio-container">
                                         <div class="radio-wrapper">
@@ -388,12 +405,12 @@
                                             />
                                             <label class="radio-label" for="contract-term-4-6">4-6 мес.</label>
                                         </div>
-                                        <!-- <div class="radio-wrapper">
+                                        <div class="radio-wrapper">
                                             <input type="radio" class="input-radio" name="contract-term" id="contract-term-unlim" value="[0, 0, 0]" />
                                             <label class="radio-label" for="contract-term-unlim">Бессрочно</label>
-                                        </div> -->
+                                        </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </form>
                             <div class="calc-result-container">
                                 <small class="calc-result-decription">Вознаграждение*</small>
@@ -428,7 +445,7 @@
                 resultNode.text(result.toLocaleString('ru-RU') + ' ₽');
             });
 
-            const profitInput = document.querySelector('#monthly-profit');
+            const profitInput = document.querySelector('#project-budget');
             const inputRange = document.querySelector('.input-range');
             const rangeProgress = document.querySelector('.range-progress');
             rangeProgress.style.width = `${((profitInput.value - profitInput.min) / (profitInput.max - profitInput.min)) * 100}%`;
